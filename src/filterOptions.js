@@ -18,11 +18,12 @@ export const filterOptions = [
   {
     id: "gate",
     type: "select",
-    alias: "The 'alias' option for the GATE is displayed here.",
-    select: [
-      { alias: "GATE 1", value: "GATE1" },
-      { alias: "GATE 2", value: "GATE2" }
-    ]
+    alias: "The 'alias' option for the GATE is displayed here.\n 'options' for a 'select' are retrieved from 'state'",
+    selectInState: {
+      link: "selects.select_gate",
+      alias: "name",
+      value: "id"
+    }
   },
   {
     id: "region",
@@ -71,7 +72,7 @@ export function getOptionsForItem(id, filter_options) {
   };
 
   if (filterItemOptions.type === "select") {
-    if (!filterItemOptions.hasOwnProperty("select")) {
+    if (!filterItemOptions.hasOwnProperty("select") && !filterItemOptions.hasOwnProperty("selectInState")) {
       filterItemOptions.select = [];
     }
   }

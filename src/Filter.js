@@ -2,6 +2,30 @@ import React, { Component } from "react";
 import "./Filter.css";
 
 import { getOptionsForItem } from "./filterOptions";
+//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+function getObjectValueForPath(obj, path, returnValue=true) {
+  function isObject (obj1) {
+    if ((typeof(obj1) === "object" && obj1 !== null )) { return true }
+    return false;
+  }
+
+    if (!isObject(obj)) { return null }
+
+    var i;
+    path = path.split('.');
+    for (i = 0; i < path.length - 1; i++) {
+        if (!isObject(obj[path[i]])) { return null }
+        if (obj.hasOwnProperty(path[i])) {
+          obj = obj[path[i]]
+        } else {
+          return null
+        }
+    }
+
+    if (!obj.hasOwnProperty(path[i])) {return null}
+    return returnValue ? obj[path[i]] : obj;
+}
+//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 export class Filter extends Component {
   setFilterValue(name, value) {
@@ -11,6 +35,30 @@ export class Filter extends Component {
   clearFilterAllValues(e) {
     this.props.callbackClearFilterAllValues();
   }
+
+//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+  returnSelectOptions (state, filterItemOptions) {
+    let link, alias, value, SelectOptionsArray;
+    if (filterItemOptions.selectInState) {
+      link = filterItemOptions.selectInState.link;
+      alias = filterItemOptions.selectInState.alias;
+      value = filterItemOptions.selectInState.value;
+      SelectOptionsArray = getObjectValueForPath(state, link);
+    } else if (filterItemOptions.select) {
+      alias = 'alias';
+      value = 'value';
+      SelectOptionsArray = filterItemOptions.select;
+    };
+
+    let optionsJsx = [<option key={0} value={""}>{'---'}</option>]; //0 элемент
+
+    SelectOptionsArray.forEach(function(item1, i1, arr1) { //пробегаем по массиву и добавляем опцию в select->option, где есть ИМЯ и ЗНАЧЕНИЕ
+      optionsJsx.push(<option key={item1[value]} value={item1[value]}>{item1[alias]}</option>);
+    })
+    return optionsJsx;
+
+  };
+//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
   render() {
     let filter_list = [];
@@ -40,14 +88,7 @@ export class Filter extends Component {
               this.setFilterValue(event.target.name, event.target.value);
             }}
           >
-            <option value={""}>---</option>
-            {filterItemOptions.select.map((item, i, arr) => {
-              return (
-                <option key={i} value={item.value}>
-                  {item.alias}
-                </option>
-              );
-            })}
+            {this.returnSelectOptions(this.props.state, filterItemOptions) }
           </select>
         );
       } else {
@@ -83,7 +124,7 @@ export class Filter extends Component {
       return <tr className="ReactFilterThead">{filter_list}</tr>;
     } else {
       return (
-        <div className="ReactFilter" id="filterInputElements">
+        <div className="ReactFilter">
           {filter_list}
           <button onClick={e => this.clearFilterAllValues(e)}>CLEAR</button>
         </div>

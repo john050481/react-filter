@@ -29,7 +29,18 @@ export class Example extends Component {
       list_data,
       list_data_filtered: list_data.slice(),
       filter_fields,
-      filter_options
+      filter_options,
+      /*for example: put in the state 'select' for 'GATE' (watch options in file 'filterOptions.js')*/
+      selects: {
+        select_gate: [
+          {id: 'GATE1', name: 'Gate 1'},
+          {id: 'GATE2', name: 'Gate 2'},
+          {id: 'GATE5', name: 'Gate 5'},
+          {id: 'GATE10', name: 'Gate 10'},
+          {id: 'GATE17', name: 'Gate 17'},
+          {id: 'GATE33', name: 'Gate 33'}
+        ]
+      }
     };
   }
 
@@ -56,7 +67,9 @@ export class Example extends Component {
       );
     } else if (filterItemOptions.type === "number") {
       return Number(data) === Number(filterValue);
-    }
+    } else if (filterItemOptions.type === "select") {
+      return String(data) === String(filterValue);
+    };
     //else, perceive data as a string
     return (
       String(data)
@@ -146,6 +159,7 @@ export class Example extends Component {
           <tr>{arrThead}</tr>
           <Filter
             thead={true}
+            state={this.state}
             filter_options={this.state.filter_options}
             filter_fields={this.state.filter_fields}
             callbackSetFilterValue={(name, value) => {
@@ -163,6 +177,7 @@ export class Example extends Component {
     return (
       <div className="Example">
         <Filter
+          state={this.state}
           filter_options={this.state.filter_options}
           filter_fields={this.state.filter_fields}
           callbackSetFilterValue={(name, value) => {
