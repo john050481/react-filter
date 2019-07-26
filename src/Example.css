@@ -1,0 +1,22 @@
+.Example {
+}
+
+.ExampleTable input {
+  width: 100%;
+}
+.ExampleTable select {
+  width: 100%;
+}
+
+td {
+  border: 1px solid black;
+}
+
+.ExampleTable {
+  background: rgb(230, 230, 230);
+  padding: 5px;
+}
+
+thead th {
+  padding: 5px;
+}

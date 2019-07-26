@@ -1,0 +1,30 @@
+.ClassCompFilter {
+  text-align: center;
+  position: -webkit-sticky;
+  position: sticky;
+  top: 5px;
+  border: 1px solid black;
+  padding: 10px;
+  background: #c8ffcf;
+}
+
+.ClassCompFilterThead th {
+  position: -webkit-sticky;
+  position: sticky;
+  top: 75px;
+  background: #c8ffcf;
+  border: 1px solid black;
+}
+
+.ClassCompFilter_InputelEments_Edit {
+  background: #ff9299;
+}
+
+.ClassCompFilter_InputelEments_notEdit {
+  background: #ffffff;
+}
+
+.ClassCompFilter select,
+input {
+  width: 15%;
+}
