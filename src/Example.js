@@ -3,7 +3,7 @@ import moment from "moment";
 import { Filter } from "./Filter";
 import "./Example.css";
 
-import { defaultOptionsItems, getOptionsForItem } from "./defaultOptionsItems";
+import { filterOptions, getOptionsForItem } from "./filterOptions";
 
 import generateFakeData from "./generateFakeData";
 
@@ -20,7 +20,7 @@ export class Example extends Component {
     if (!list_data) {
       //default
       list_data = generateFakeData(200, 30);
-      filter_options = defaultOptionsItems;
+      filter_options = filterOptions;
     }
 
     const { filter_fields } = this.initFilter(list_data);
@@ -45,16 +45,16 @@ export class Example extends Component {
   }
 
   filterPassed(key, data, filterValue) {
-    let defaultOptionsForItem = getOptionsForItem(
+    let filterItemOptions = getOptionsForItem(
       key,
       this.state.filter_options
     );
-    if (defaultOptionsForItem.type === "date") {
+    if (filterItemOptions.type === "date") {
       return (
         moment(data).format("YYYY-MM-DD") ===
         moment(filterValue).format("YYYY-MM-DD")
       );
-    } else if (defaultOptionsForItem.type === "number") {
+    } else if (filterItemOptions.type === "number") {
       return Number(data) === Number(filterValue);
     }
     //else, perceive data as a string
@@ -114,13 +114,13 @@ export class Example extends Component {
   }
 
   parseDataType(item, key) {
-    let defaultOptionsForItem = getOptionsForItem(
+    let filterItemOptions = getOptionsForItem(
       key,
       this.state.filter_options
     );
-    if (defaultOptionsForItem.type === "date") {
+    if (filterItemOptions.type === "date") {
       return moment(item[key]).format("YYYY-MM-DD hh:mm");
-    } else if (defaultOptionsForItem.type === "number") {
+    } else if (filterItemOptions.type === "number") {
       return Number(item[key]).toLocaleString();
     }
     return String(item[key]);
@@ -173,7 +173,7 @@ export class Example extends Component {
           }}
         />
         <hr />
-        <div className="ExampleTable">
+        <div className="Example__Table">
           <button onClick={e => console.log("STATE: ", this.state)}>
             show state in console
           </button>

@@ -16,8 +16,8 @@ export default function(itemCount = 100, daysInPast = 30) {
     let region = ["REGION1", "REGION2"];
     let provider = ["PROVIDER1", "PROVIDER2"];
 
-    /* 
-    to set 'id' options in 'defaultOptionsItems.js' 
+    /*
+    to set 'id' options in 'filterOptions.js' 
     use name property in 'fakeArray'
     */
     fakeArray.push({

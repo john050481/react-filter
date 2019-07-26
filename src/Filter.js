@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import "./Filter.css";
 
-import { getOptionsForItem } from "./defaultOptionsItems";
+import { getOptionsForItem } from "./filterOptions";
 
 export class Filter extends Component {
   setFilterValue(name, value) {
@@ -15,33 +15,33 @@ export class Filter extends Component {
   render() {
     let filter_list = [];
     for (let key in this.props.filter_fields) {
-      let defaultOptionsForItem = getOptionsForItem(
+      let filterItemOptions = getOptionsForItem(
         key,
         this.props.filter_options
       );
 
       let curentFilterValue = this.props.filter_fields[key];
 
-      if (defaultOptionsForItem.type === "select") {
+      if (filterItemOptions.type === "select") {
         filter_list.push(
           <select
             key={key}
-            disabled={defaultOptionsForItem.disabled}
-            hidden={defaultOptionsForItem.hidden}
-            title={defaultOptionsForItem.alias}
-            name={defaultOptionsForItem.id}
+            disabled={filterItemOptions.disabled}
+            hidden={filterItemOptions.hidden}
+            title={filterItemOptions.alias}
+            name={filterItemOptions.id}
             value={curentFilterValue}
             className={
               curentFilterValue
-                ? "ClassCompFilter_InputelEments_Edit"
-                : "ClassCompFilter_InputelEments_notEdit"
+                ? "ReactFilter__InputelEments_Edit"
+                : "ReactFilter__InputelEments_notEdit"
             }
             onChange={event => {
               this.setFilterValue(event.target.name, event.target.value);
             }}
           >
             <option value={""}>---</option>
-            {defaultOptionsForItem.select.map((item, i, arr) => {
+            {filterItemOptions.select.map((item, i, arr) => {
               return (
                 <option key={i} value={item.value}>
                   {item.alias}
@@ -54,17 +54,17 @@ export class Filter extends Component {
         filter_list.push(
           <input
             key={key}
-            disabled={defaultOptionsForItem.disabled}
-            hidden={defaultOptionsForItem.hidden}
-            type={defaultOptionsForItem.type}
-            placeholder={defaultOptionsForItem.alias}
-            title={defaultOptionsForItem.alias}
-            name={defaultOptionsForItem.id}
+            disabled={filterItemOptions.disabled}
+            hidden={filterItemOptions.hidden}
+            type={filterItemOptions.type}
+            placeholder={filterItemOptions.alias}
+            title={filterItemOptions.alias}
+            name={filterItemOptions.id}
             value={curentFilterValue}
             className={
               curentFilterValue
-                ? "ClassCompFilter_InputelEments_Edit"
-                : "ClassCompFilter_InputelEments_notEdit"
+                ? "ReactFilter__InputelEments_Edit"
+                : "ReactFilter__InputelEments_notEdit"
             }
             onChange={event => {
               this.setFilterValue(event.target.name, event.target.value);
@@ -80,10 +80,10 @@ export class Filter extends Component {
 
     if (this.props.thead) {
       //for table
-      return <tr className="ClassCompFilterThead">{filter_list}</tr>;
+      return <tr className="ReactFilterThead">{filter_list}</tr>;
     } else {
       return (
-        <div className="ClassCompFilter" id="filterInputElements">
+        <div className="ReactFilter" id="filterInputElements">
           {filter_list}
           <button onClick={e => this.clearFilterAllValues(e)}>CLEAR</button>
         </div>

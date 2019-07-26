@@ -1,4 +1,4 @@
-.ClassCompFilter {
+.ReactFilter {
   text-align: center;
   position: -webkit-sticky;
   position: sticky;
@@ -8,7 +8,7 @@
   background: #c8ffcf;
 }
 
-.ClassCompFilterThead th {
+.ReactFilterThead th {
   position: -webkit-sticky;
   position: sticky;
   top: 75px;
@@ -16,15 +16,15 @@
   border: 1px solid black;
 }
 
-.ClassCompFilter_InputelEments_Edit {
+.ReactFilter__InputelEments_Edit {
   background: #ff9299;
 }
 
-.ClassCompFilter_InputelEments_notEdit {
+.ReactFilter__InputelEments_notEdit {
   background: #ffffff;
 }
 
-.ClassCompFilter select,
+.ReactFilter select,
 input {
   width: 15%;
 }
