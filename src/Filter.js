@@ -1,31 +1,8 @@
 import React, { Component } from "react";
+import {getPropertyValue} from "fun24js";
 import "./Filter.css";
 
 import { getOptionsForItem } from "./filterOptions";
-//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-function getObjectValueForPath(obj, path, returnValue=true) {
-  function isObject (obj1) {
-    if ((typeof(obj1) === "object" && obj1 !== null )) { return true }
-    return false;
-  }
-
-    if (!isObject(obj)) { return null }
-
-    var i;
-    path = path.split('.');
-    for (i = 0; i < path.length - 1; i++) {
-        if (!isObject(obj[path[i]])) { return null }
-        if (obj.hasOwnProperty(path[i])) {
-          obj = obj[path[i]]
-        } else {
-          return null
-        }
-    }
-
-    if (!obj.hasOwnProperty(path[i])) {return null}
-    return returnValue ? obj[path[i]] : obj;
-}
-//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 export class Filter extends Component {
   setFilterValue(name, value) {
@@ -36,29 +13,26 @@ export class Filter extends Component {
     this.props.callbackClearFilterAllValues();
   }
 
-//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
   returnSelectOptions (state, filterItemOptions) {
     let link, alias, value, SelectOptionsArray;
     if (filterItemOptions.selectInState) {
       link = filterItemOptions.selectInState.link;
       alias = filterItemOptions.selectInState.alias;
       value = filterItemOptions.selectInState.value;
-      SelectOptionsArray = getObjectValueForPath(state, link);
+      SelectOptionsArray = getPropertyValue(state, link).value;
     } else if (filterItemOptions.select) {
       alias = 'alias';
       value = 'value';
       SelectOptionsArray = filterItemOptions.select;
     };
 
-    let optionsJsx = [<option key={0} value={""}>{'---'}</option>]; //0 элемент
+    let optionsJsx = [<option key={0} value={null}>{'---'}</option>]; //0 элемент
 
-    SelectOptionsArray.forEach(function(item1, i1, arr1) { //пробегаем по массиву и добавляем опцию в select->option, где есть ИМЯ и ЗНАЧЕНИЕ
-      optionsJsx.push(<option key={item1[value]} value={item1[value]}>{item1[alias]}</option>);
+    SelectOptionsArray.forEach(function(item) { //пробегаем по массиву и добавляем опцию в select->option, где есть ИМЯ и ЗНАЧЕНИЕ
+      optionsJsx.push(<option key={item[value]} value={item[value]}>{item[alias]}</option>);
     })
     return optionsJsx;
-
   };
-//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
   render() {
     let filter_list = [];

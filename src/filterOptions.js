@@ -60,8 +60,13 @@ export function getOptionsForItem(id, filter_options) {
   let filterItemOptions = filter_options.find((item, i, arr) => {
     return item.id === id;
   });
-
   filterItemOptions = filterItemOptions ? filterItemOptions : {};
+
+  if (filterItemOptions.type === "select") {
+    if (!filterItemOptions.hasOwnProperty("select") && !filterItemOptions.hasOwnProperty("selectInState")) {
+      filterItemOptions.select = [];
+    }
+  }
 
   let defOption = {
     id: id,
@@ -70,12 +75,6 @@ export function getOptionsForItem(id, filter_options) {
     disabled: false,
     hidden: false
   };
-
-  if (filterItemOptions.type === "select") {
-    if (!filterItemOptions.hasOwnProperty("select") && !filterItemOptions.hasOwnProperty("selectInState")) {
-      filterItemOptions.select = [];
-    }
-  }
 
   return Object.assign(defOption, filterItemOptions);
 }

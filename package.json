@@ -6,6 +6,7 @@
   "main": "src/index.js",
   "dependencies": {
     "faker": "4.1.0",
+    "fun24js": "^0.1.2",
     "moment": "2.24.0",
     "react": "16.8.6",
     "react-dom": "16.8.6",
