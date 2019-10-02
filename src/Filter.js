@@ -1,10 +1,103 @@
 import React, { Component } from "react";
+import moment from "moment";
 import {getPropertyValue} from "fun24js";
 import "./Filter.css";
 
-import { getOptionsForItem } from "./filterOptions";
-
 export class Filter extends Component {
+  static initFilter(list_data) {
+    let filter_fields = {};
+
+    if (Array.isArray(list_data) && list_data.length) {
+      let firstItem = list_data[0];
+      let keys = Object.keys(firstItem);
+      keys.forEach( (key) => { filter_fields[key] = "" });
+    }
+
+    return { filter_fields };
+  }
+
+  static getOptionsForItem(id, filter_options) {
+    let filterItemOptions = filter_options.find((item, i, arr) => {
+      return item.id === id;
+    });
+    filterItemOptions = filterItemOptions ? filterItemOptions : {};
+
+    if (filterItemOptions.type === "select") {
+      if (!filterItemOptions.hasOwnProperty("select") && !filterItemOptions.hasOwnProperty("selectInState")) {
+        filterItemOptions.select = [];
+      }
+    }
+
+    let defOption = {
+      id: id,
+      type: "text",
+      alias: String(id).toUpperCase(),
+      disabled: false,
+      hidden: false
+    };
+
+    return Object.assign(defOption, filterItemOptions);
+  }
+
+  static compareNumber(data, filterValue) {
+    return Number(data) === Number(filterValue);
+  }
+
+  static compareString(data, filterValue) {
+    return (
+      String(data)
+        .toLowerCase()
+        .indexOf(String(filterValue).toLowerCase()) !== -1
+    );
+  }
+
+  static compareSelect(data, filterValue) {
+    return String(data) === String(filterValue);
+  }
+
+  static compareDate(data, filterValue) {
+    return (
+      moment(data).format("YYYY-MM-DD") ===
+      moment(filterValue).format("YYYY-MM-DD")
+    );
+  }
+
+  static filterPassed(type, data, filterValue) {
+    if (type === "date") {
+      return this.compareDate(data, filterValue);
+    } else if (type === "number") {
+      return this.compareNumber(data, filterValue);
+    } else if (type === "select") {
+      return this.compareSelect(data, filterValue);
+    };
+    //else, perceive data as a string
+    return this.compareString(data, filterValue);
+  }
+
+  static runFilter(list_data, filter_fields, filter_options) {
+    //find not empty filds
+    let filter_fields_notEmpty = {};
+    for (let key in filter_fields) {
+      if (filter_fields[key]) {
+        filter_fields_notEmpty[key] = filter_fields[key];
+      }
+    }
+
+    let list_data_filtered = list_data.filter(
+      (item, i, arr) => {
+        let pass = true;
+        for (let key in filter_fields_notEmpty) {
+          pass =
+            pass &&
+            this.filterPassed(this.getOptionsForItem(key, filter_options).type, item[key], filter_fields_notEmpty[key]);
+          if (!pass) break;
+        }
+        return pass;
+      }
+    );
+    return list_data_filtered;
+  }
+
   setFilterValue(name, value) {
     this.props.callbackSetFilterValue(name, value);
   }
@@ -37,7 +130,7 @@ export class Filter extends Component {
   render() {
     let filter_list = [];
     for (let key in this.props.filter_fields) {
-      let filterItemOptions = getOptionsForItem(
+      let filterItemOptions = Filter.getOptionsForItem(
         key,
         this.props.filter_options
       );

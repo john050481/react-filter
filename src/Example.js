@@ -3,7 +3,7 @@ import moment from "moment";
 import { Filter } from "./Filter";
 import "./Example.css";
 
-import { filterOptions, getOptionsForItem } from "./filterOptions";
+import { filterOptions } from "./filterOptions";
 
 import generateFakeData from "./generateFakeData";
 
@@ -23,7 +23,7 @@ export class Example extends Component {
       filter_options = filterOptions;
     }
 
-    const { filter_fields } = this.initFilter(list_data);
+    const { filter_fields } = Filter.initFilter(list_data);
 
     this.state = {
       list_data,
@@ -44,64 +44,6 @@ export class Example extends Component {
     };
   }
 
-  initFilter(list_data) {
-    let filter_fields = {};
-    if (list_data.length) {
-      let item = list_data[0];
-      for (let key in item) {
-        filter_fields[key] = "";
-      }
-    }
-    return { filter_fields };
-  }
-
-  filterPassed(key, data, filterValue) {
-    let filterItemOptions = getOptionsForItem(
-      key,
-      this.state.filter_options
-    );
-    if (filterItemOptions.type === "date") {
-      return (
-        moment(data).format("YYYY-MM-DD") ===
-        moment(filterValue).format("YYYY-MM-DD")
-      );
-    } else if (filterItemOptions.type === "number") {
-      return Number(data) === Number(filterValue);
-    } else if (filterItemOptions.type === "select") {
-      return String(data) === String(filterValue);
-    };
-    //else, perceive data as a string
-    return (
-      String(data)
-        .toLowerCase()
-        .indexOf(String(filterValue).toLowerCase()) !== -1
-    );
-  }
-
-  runFilter() {
-    //find not empty filds
-    let filter_fields_notEmpty = {};
-    for (let key in this.state.filter_fields) {
-      if (this.state.filter_fields[key]) {
-        filter_fields_notEmpty[key] = this.state.filter_fields[key];
-      }
-    }
-
-    let temp_list_data_filtered = this.state.list_data.filter(
-      (item, i, arr) => {
-        let pass = true;
-        for (let key in filter_fields_notEmpty) {
-          pass =
-            pass &&
-            this.filterPassed(key, item[key], filter_fields_notEmpty[key]);
-          if (!pass) break;
-        }
-        return pass;
-      }
-    );
-    this.setState({ list_data_filtered: temp_list_data_filtered });
-  }
-
   setFilterValue(name, value) {
     console.log(name, " = ", value);
     let new_filter_fields = Object.assign({}, this.state.filter_fields);
@@ -113,7 +55,8 @@ export class Example extends Component {
     }
     timerid = setTimeout(() => {
       console.log("timer 1sec!!! Fetch or ather actions for filter!!!");
-      this.runFilter();
+      let list_data_filtered = Filter.runFilter(this.state.list_data, this.state.filter_fields, this.state.filter_options);
+      this.setState({ list_data_filtered });
     }, 1000);
   }
 
@@ -121,13 +64,13 @@ export class Example extends Component {
     console.log("clear");
 
     this.setState({
-      filter_fields: this.initFilter(this.state.list_data).filter_fields,
+      filter_fields: Filter.initFilter(this.state.list_data).filter_fields,
       list_data_filtered: this.state.list_data.slice()
     });
   }
 
-  parseDataType(item, key) {
-    let filterItemOptions = getOptionsForItem(
+  formatDataType(item, key) {
+    let filterItemOptions = Filter.getOptionsForItem(
       key,
       this.state.filter_options
     );
@@ -149,7 +92,7 @@ export class Example extends Component {
         if (i === 0) {
           arrThead.push(<th key={key}>{key.toUpperCase()}</th>);
         }
-        arrTd.push(<td key={key}>{this.parseDataType(item, key)}</td>);
+        arrTd.push(<td key={key}>{this.formatDataType(item, key)}</td>);
       }
       arrTr.push(<tr key={i}>{arrTd}</tr>);
     });

@@ -55,26 +55,3 @@ export const filterOptions = [
     ]
   }
 ];
-
-export function getOptionsForItem(id, filter_options) {
-  let filterItemOptions = filter_options.find((item, i, arr) => {
-    return item.id === id;
-  });
-  filterItemOptions = filterItemOptions ? filterItemOptions : {};
-
-  if (filterItemOptions.type === "select") {
-    if (!filterItemOptions.hasOwnProperty("select") && !filterItemOptions.hasOwnProperty("selectInState")) {
-      filterItemOptions.select = [];
-    }
-  }
-
-  let defOption = {
-    id: id,
-    type: "text",
-    alias: String(id).toUpperCase(),
-    disabled: false,
-    hidden: false
-  };
-
-  return Object.assign(defOption, filterItemOptions);
-}
