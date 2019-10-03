@@ -23,7 +23,7 @@ export class Example extends Component {
       filter_options = filterOptions;
     }
 
-    const { filter_fields } = Filter.initFilter(list_data);
+    const { filter_fields } = Filter.initFilterFields(list_data);
 
     this.state = {
       list_data,
@@ -64,7 +64,7 @@ export class Example extends Component {
     console.log("clear");
 
     this.setState({
-      filter_fields: Filter.initFilter(this.state.list_data).filter_fields,
+      filter_fields: Filter.initFilterFields(this.state.list_data).filter_fields,
       list_data_filtered: this.state.list_data.slice()
     });
   }

@@ -4,7 +4,7 @@ import {getPropertyValue} from "fun24js";
 import "./Filter.css";
 
 export class Filter extends Component {
-  static initFilter(list_data) {
+  static initFilterFields(list_data) {
     let filter_fields = {};
 
     if (Array.isArray(list_data) && list_data.length) {
@@ -17,9 +17,7 @@ export class Filter extends Component {
   }
 
   static getOptionsForItem(id, filter_options) {
-    let filterItemOptions = filter_options.find((item, i, arr) => {
-      return item.id === id;
-    });
+    let filterItemOptions = filter_options.find( item => item.id === id );
     filterItemOptions = filterItemOptions ? filterItemOptions : {};
 
     if (filterItemOptions.type === "select") {
@@ -28,7 +26,7 @@ export class Filter extends Component {
       }
     }
 
-    let defOption = {
+    let defaultOption = {
       id: id,
       type: "text",
       alias: String(id).toUpperCase(),
@@ -36,7 +34,7 @@ export class Filter extends Component {
       hidden: false
     };
 
-    return Object.assign(defOption, filterItemOptions);
+    return Object.assign(defaultOption, filterItemOptions);
   }
 
   static compareNumber(data, filterValue) {
@@ -82,14 +80,12 @@ export class Filter extends Component {
         filter_fields_notEmpty[key] = filter_fields[key];
       }
     }
-
+    //filter list_data
     let list_data_filtered = list_data.filter(
       (item, i, arr) => {
         let pass = true;
         for (let key in filter_fields_notEmpty) {
-          pass =
-            pass &&
-            this.filterPassed(this.getOptionsForItem(key, filter_options).type, item[key], filter_fields_notEmpty[key]);
+          pass = pass && this.filterPassed(this.getOptionsForItem(key, filter_options).type, item[key], filter_fields_notEmpty[key]);
           if (!pass) break;
         }
         return pass;
@@ -98,8 +94,8 @@ export class Filter extends Component {
     return list_data_filtered;
   }
 
-  setFilterValue(name, value) {
-    this.props.callbackSetFilterValue(name, value);
+  setFilterValue(filterItemName, filterItemValue) {
+    this.props.callbackSetFilterValue(filterItemName, filterItemValue);
   }
 
   clearFilterAllValues(e) {
