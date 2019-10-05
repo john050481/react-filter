@@ -16,7 +16,7 @@ export class Filter extends Component {
     return { filter_fields };
   }
 
-  static getOptionsForItem(id, filter_options) {
+  static getFilterFieldsOptions(id, filter_options) {
     let filterItemOptions = filter_options.find( item => item.id === id );
     filterItemOptions = filterItemOptions ? filterItemOptions : {};
 
@@ -85,7 +85,7 @@ export class Filter extends Component {
       (item, i, arr) => {
         let pass = true;
         for (let key in filter_fields_notEmpty) {
-          pass = pass && this.filterPassed(this.getOptionsForItem(key, filter_options).type, item[key], filter_fields_notEmpty[key]);
+          pass = pass && this.filterPassed(this.getFilterFieldsOptions(key, filter_options).type, item[key], filter_fields_notEmpty[key]);
           if (!pass) break;
         }
         return pass;
@@ -115,18 +115,18 @@ export class Filter extends Component {
       SelectOptionsArray = filterItemOptions.select;
     };
 
-    let optionsJsx = [<option key={0} value={null}>{'---'}</option>]; //0 элемент
+    let optionsJSX = [<option key={0} value={null}>{'---'}</option>]; //0 элемент
 
     SelectOptionsArray.forEach(function(item) { //пробегаем по массиву и добавляем опцию в select->option, где есть ИМЯ и ЗНАЧЕНИЕ
-      optionsJsx.push(<option key={item[value]} value={item[value]}>{item[alias]}</option>);
+      optionsJSX.push(<option key={item[value]} value={item[value]}>{item[alias]}</option>);
     })
-    return optionsJsx;
+    return optionsJSX;
   };
 
   render() {
-    let filter_list = [];
+    let filterFieldsJSX = [];
     for (let key in this.props.filter_fields) {
-      let filterItemOptions = Filter.getOptionsForItem(
+      let filterItemOptions = Filter.getFilterFieldsOptions(
         key,
         this.props.filter_options
       );
@@ -134,7 +134,7 @@ export class Filter extends Component {
       let curentFilterValue = this.props.filter_fields[key];
 
       if (filterItemOptions.type === "select") {
-        filter_list.push(
+        filterFieldsJSX.push(
           <select
             key={key}
             disabled={filterItemOptions.disabled}
@@ -155,7 +155,7 @@ export class Filter extends Component {
           </select>
         );
       } else {
-        filter_list.push(
+        filterFieldsJSX.push(
           <input
             key={key}
             disabled={filterItemOptions.disabled}
@@ -177,18 +177,18 @@ export class Filter extends Component {
         );
       }
       if (this.props.thead) {
-        let lastIndex = filter_list.length - 1;
-        filter_list[lastIndex] = <th key={key}>{filter_list[lastIndex]}</th>;
+        let lastIndex = filterFieldsJSX.length - 1;
+        filterFieldsJSX[lastIndex] = <th key={key}>{filterFieldsJSX[lastIndex]}</th>;
       }
     }
 
     if (this.props.thead) {
       //for table
-      return <tr className="ReactFilterThead">{filter_list}</tr>;
+      return <tr className="ReactFilter__Thead">{filterFieldsJSX}</tr>;
     } else {
       return (
         <div className="ReactFilter">
-          {filter_list}
+          {filterFieldsJSX}
           <button onClick={e => this.clearFilterAllValues(e)}>CLEAR</button>
         </div>
       );

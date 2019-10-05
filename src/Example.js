@@ -70,7 +70,7 @@ export class Example extends Component {
   }
 
   formatDataType(item, key) {
-    let filterItemOptions = Filter.getOptionsForItem(
+    let filterItemOptions = Filter.getFilterFieldsOptions(
       key,
       this.state.filter_options
     );

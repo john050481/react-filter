@@ -8,7 +8,7 @@
   background: #c8ffcf;
 }
 
-.ReactFilterThead th {
+.ReactFilter__Thead th {
   position: -webkit-sticky;
   position: sticky;
   top: 75px;
