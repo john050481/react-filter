@@ -7,6 +7,15 @@ import { filterOptions } from "./filterOptions";
 
 import generateFakeData from "./generateFakeData";
 
+//you can replace the comparison methods (four methods: compareString(this method is used by default), compareNumber,
+//compareSelect, compareDate) with your methods, for example
+Filter.compareDate = (data, filterValue) => {
+  return (
+    moment(data).format("YYYY-MM-DD") >= //default '==='
+    moment(filterValue).format("YYYY-MM-DD")
+  );
+}
+
 let timerid;
 
 export class Example extends Component {

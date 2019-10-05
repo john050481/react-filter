@@ -123,7 +123,7 @@ export class Filter extends Component {
       SelectOptionsArray = filterItemOptions.select;
     };
 
-    let optionsJSX = [<option key={0} value={null}>{'---'}</option>]; //0 элемент
+    let optionsJSX = [<option key={0} value={''}>{'---'}</option>]; //0 элемент
 
     SelectOptionsArray.forEach(function(item) { //пробегаем по массиву и добавляем опцию в select->option, где есть ИМЯ и ЗНАЧЕНИЕ
       optionsJSX.push(<option key={item[value]} value={item[value]}>{item[alias]}</option>);

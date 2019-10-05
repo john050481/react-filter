@@ -1,7 +1,7 @@
 /*
 options for each item:
 id: unique id - name property in fakeArray (watch 'generateFakeData.js'),
-type: text/number/select,
+type: text/number/select/date,
 alias: title and placeholder,
 className: any user css class for input element
 disabled: true/false, for input element
