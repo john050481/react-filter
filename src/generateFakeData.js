@@ -3,7 +3,7 @@ import moment from "moment";
 
 export default function(itemCount = 100, daysInPast = 30) {
   let fakeArray = [];
-  for (let i = 0; i < itemCount; i++) {
+  for (let i = 10000; i < 10000 + itemCount; i++) {
     const startDate =
       faker.date.recent(daysInPast).valueOf() + daysInPast * 0.3 * 86400 * 1000;
     const startValue =
