@@ -24,7 +24,6 @@
   background: #ffffff;
 }
 
-.ReactFilter select,
-input {
+.ReactFilter select, input {
   width: 15%;
 }

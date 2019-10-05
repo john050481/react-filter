@@ -14,18 +14,21 @@ export class Example extends Component {
     super(props);
     //this.state = {};
 
+    //incoming data, see index.js: <Example list_data = anyAraayOfObject filter_options = anyOptionsFromList_Data_SeeFile_filterOptions.js />
     let list_options = this.props.options;
     let list_data = this.props.list_data;
 
+    //default
     if (!list_options) list_options = [{}];
     if (!list_data) {
-      //default
+      //generate
       list_data = generateFakeData(200, 30);
       list_options = filterOptions;
     }
 
+    //init Filter
     const { filter_fields } = Filter.initFilterFields(list_data);
-    const { filter_options } = Filter.initFilterOptions(list_options);
+    const { filter_options } = Filter.initFilterOptions(filter_fields, list_options);
 
     this.state = {
       list_data,

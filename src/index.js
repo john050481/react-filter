@@ -6,7 +6,7 @@ import "./styles.css";
 
 const App = () => (
   <div>
-    <Example /* list_data=anyAraayOfObject filter_options=anyOptionsFromList_Data */
+    <Example /* list_data = anyAraayOfObject filter_options = anyOptionsFromList_Data_SeeFile_filterOptions.js */
     />
   </div>
 );

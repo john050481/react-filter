@@ -3,10 +3,18 @@ options for each item:
 id: unique id - name property in fakeArray (watch 'generateFakeData.js'),
 type: text/number/select,
 alias: title and placeholder,
-disabled: true/false, for input props
-hidden: true/false, for input props
+className: any user css class for input element
+disabled: true/false, for input element
+hidden: true/false, for input element
 
-if type==='select', then options for select in property 'select'
+if type==='select', then options for select in property 'select' or
+options for an select can be in state (you can accept them like 'fetch'),
+then you need to specify the path:
+  selectInState: {
+    link: "selects.select_gate",
+    alias: "name",
+    value: "id"
+  }
 */
 export const filterOptions = [
   { id: "id", type: "number", alias: "enter ID" },

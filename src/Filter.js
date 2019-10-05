@@ -16,12 +16,9 @@ export class Filter extends Component {
     return { filter_fields };
   }
 
-  static initFilterOptions(list_options) {
-    let filter_options = {};
-
-    if (Array.isArray(list_options) && list_options.length) {
-      filter_options = list_options.map( (item, i, arr) => this.getFilterFieldsOptions(item.id, list_options) );
-    }
+  static initFilterOptions(filter_fields, list_options) {
+    let keys = Object.keys(filter_fields);
+    let filter_options = keys.map( (key) => this.getFilterFieldsOptions(key, list_options) );
 
     return { filter_options };
   }
@@ -84,7 +81,7 @@ export class Filter extends Component {
   }
 
   static runFilter(list_data, filter_fields, filter_options) {
-    //find not empty filds
+    //find not empty filter filds
     let filter_fields_notEmpty = {};
     for (let key in filter_fields) {
       if (filter_fields[key]) {
@@ -115,12 +112,12 @@ export class Filter extends Component {
 
   returnSelectOptions (state, filterItemOptions) {
     let link, alias, value, SelectOptionsArray;
-    if (filterItemOptions.selectInState) {
+    if (filterItemOptions.selectInState) {//options for select are located in state
       link = filterItemOptions.selectInState.link;
       alias = filterItemOptions.selectInState.alias;
       value = filterItemOptions.selectInState.value;
       SelectOptionsArray = getPropertyValue(state, link).value;
-    } else if (filterItemOptions.select) {
+    } else if (filterItemOptions.select) {//options for select are located in property 'select'
       alias = 'alias';
       value = 'value';
       SelectOptionsArray = filterItemOptions.select;
