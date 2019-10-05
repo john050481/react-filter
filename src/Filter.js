@@ -68,6 +68,10 @@ export class Filter extends Component {
     );
   }
 
+  static compareBoolean(data, filterValue) {
+    return String(data) === String(filterValue);
+  }
+
   static filterPassed(type, data, filterValue) {
     if (type === "date") {
       return this.compareDate(data, filterValue);
@@ -75,6 +79,8 @@ export class Filter extends Component {
       return this.compareNumber(data, filterValue);
     } else if (type === "select") {
       return this.compareSelect(data, filterValue);
+    } else if (type === "boolean") {
+      return this.compareBoolean(data, filterValue);
     };
     //else, perceive data as a string
     return this.compareString(data, filterValue);
@@ -112,7 +118,14 @@ export class Filter extends Component {
 
   returnSelectOptions (state, filterItemOptions) {
     let link, alias, value, SelectOptionsArray;
-    if (filterItemOptions.selectInState) {//options for select are located in state
+    let optionsJSX = [];
+
+    if (filterItemOptions.type === 'boolean') {
+      optionsJSX.push(<option key={0} value={''}>{'---'}</option>); //0 элемент
+      optionsJSX.push(<option key={1} value={true}>{'true'}</option>);
+      optionsJSX.push(<option key={2} value={false}>{'false'}</option>);
+      return optionsJSX;
+    } else if (filterItemOptions.selectInState) {//options for select are located in state
       link = filterItemOptions.selectInState.link;
       alias = filterItemOptions.selectInState.alias;
       value = filterItemOptions.selectInState.value;
@@ -123,8 +136,7 @@ export class Filter extends Component {
       SelectOptionsArray = filterItemOptions.select;
     };
 
-    let optionsJSX = [<option key={0} value={''}>{'---'}</option>]; //0 элемент
-
+    optionsJSX.push(<option key={0} value={''}>{'---'}</option>); //0 элемент
     SelectOptionsArray.forEach(function(item) { //пробегаем по массиву и добавляем опцию в select->option, где есть ИМЯ и ЗНАЧЕНИЕ
       optionsJSX.push(<option key={item[value]} value={item[value]}>{item[alias]}</option>);
     })
@@ -138,7 +150,7 @@ export class Filter extends Component {
 
       let curentFilterValue = this.props.filter_fields[key];
 
-      if (filterItemOptions.type === "select") {
+      if ( (filterItemOptions.type === "select") || (filterItemOptions.type === 'boolean') ) {
         filterFieldsJSX.push(
           <select
             key={key}

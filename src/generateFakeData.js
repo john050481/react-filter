@@ -17,7 +17,7 @@ export default function(itemCount = 100, daysInPast = 30) {
     let provider = ["PROVIDER1", "PROVIDER2"];
 
     /*
-    to set 'id' options in 'filterOptions.js' 
+    to set 'id' options in 'filterOptions.js'
     use name property in 'fakeArray'
     */
     fakeArray.push({
@@ -30,7 +30,8 @@ export default function(itemCount = 100, daysInPast = 30) {
       gate: gate[randomInteger(0, 1)],
       region: region[randomInteger(0, 1)],
       provider: provider[randomInteger(0, 1)],
-      bool: faker.random.boolean()
+      bool: faker.random.boolean(),
+      bool2: faker.random.boolean()
       /*end: endValue*/
     });
   }

@@ -7,8 +7,8 @@ import { filterOptions } from "./filterOptions";
 
 import generateFakeData from "./generateFakeData";
 
-//you can replace the comparison methods (four methods: compareString(this method is used by default), compareNumber,
-//compareSelect, compareDate) with your methods, for example
+//you can replace the comparison methods (five methods: compareString(this method is used by default), compareNumber,
+//compareSelect, compareDate, compareBoolean) with your methods, for example
 Filter.compareDate = (data, filterValue) => {
   return (
     moment(data).format("YYYY-MM-DD") >= //default '==='
@@ -90,6 +90,8 @@ export class Example extends Component {
       return moment(item[key]).format("YYYY-MM-DD hh:mm");
     } else if (filterItemOptions.type === "number") {
       return Number(item[key]).toLocaleString();
+    } else if (filterItemOptions.type === "boolean") {
+      return <input type={'checkbox'} disabled={true} checked={item[key]} />;
     }
     return String(item[key]);
   }

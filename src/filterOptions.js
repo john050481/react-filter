@@ -61,5 +61,8 @@ export const filterOptions = [
       { alias: "TRUE/YES", value: true },
       { alias: "FALSE/NO", value: false }
     ]
+  },
+  {
+    id: "bool2", type: "boolean", alias: "boolean"
   }
 ];
