@@ -17,3 +17,9 @@
 .Example thead th {
   padding: 5px;
 }
+
+.Example__anyClass {
+  border: 2px solid blue;
+  font-weight: bold;
+  color: green;
+}

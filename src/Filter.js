@@ -31,7 +31,8 @@ export class Filter extends Component {
       type: "text",
       alias: String(id).toUpperCase(),
       disabled: false,
-      hidden: false
+      hidden: false,
+      className: ""
     };
 
     return Object.assign(defaultOption, filterItemOptions);
@@ -143,9 +144,8 @@ export class Filter extends Component {
             name={filterItemOptions.id}
             value={curentFilterValue}
             className={
-              curentFilterValue
-                ? "ReactFilter__InputelEments_Edit"
-                : "ReactFilter__InputelEments_notEdit"
+              (curentFilterValue ? "ReactFilter__InputelEments_Edit" : "ReactFilter__InputelEments_notEdit") +
+              (filterItemOptions.className ? " " + filterItemOptions.className : "")
             }
             onChange={event => {
               this.setFilterValue(event.target.name, event.target.value);
@@ -166,9 +166,8 @@ export class Filter extends Component {
             name={filterItemOptions.id}
             value={curentFilterValue}
             className={
-              curentFilterValue
-                ? "ReactFilter__InputelEments_Edit"
-                : "ReactFilter__InputelEments_notEdit"
+              (curentFilterValue ? "ReactFilter__InputelEments_Edit" : "ReactFilter__InputelEments_notEdit") +
+              (filterItemOptions.className ? " " + filterItemOptions.className : "")
             }
             onChange={event => {
               this.setFilterValue(event.target.name, event.target.value);

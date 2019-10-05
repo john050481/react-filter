@@ -12,7 +12,7 @@ export const filterOptions = [
   { id: "id", type: "number", alias: "enter ID" },
   { id: "name", type: "text", alias: "NAME", disabled: true },
   { id: "address", type: "text", alias: "ADDRESS", hidden: true },
-  { id: "phone", type: "text", alias: "PHONE" },
+  { id: "phone", type: "text", alias: "PHONE", className: "Example__anyClass" },
   { id: "description", type: "search", alias: "DESCRIPTION" },
   { id: "start", type: "date", alias: "DATE" },
   {
