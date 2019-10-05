@@ -16,8 +16,18 @@ export class Filter extends Component {
     return { filter_fields };
   }
 
+  static initFilterOptions(list_options) {
+    let filter_options = {};
+
+    if (Array.isArray(list_options) && list_options.length) {
+      filter_options = list_options.map( (item, i, arr) => this.getFilterFieldsOptions(item.id, list_options) );
+    }
+
+    return { filter_options };
+  }
+
   static getFilterFieldsOptions(id, filter_options) {
-    let filterItemOptions = filter_options.find( item => item.id === id );
+    let filterItemOptions = filter_options.find( option => option.id === id );
     filterItemOptions = filterItemOptions ? filterItemOptions : {};
 
     if (filterItemOptions.type === "select") {
@@ -86,7 +96,7 @@ export class Filter extends Component {
       (item, i, arr) => {
         let pass = true;
         for (let key in filter_fields_notEmpty) {
-          pass = pass && this.filterPassed(this.getFilterFieldsOptions(key, filter_options).type, item[key], filter_fields_notEmpty[key]);
+          pass = pass && this.filterPassed(filter_options.find( option => option.id === key ).type, item[key], filter_fields_notEmpty[key]);
           if (!pass) break;
         }
         return pass;
@@ -127,10 +137,7 @@ export class Filter extends Component {
   render() {
     let filterFieldsJSX = [];
     for (let key in this.props.filter_fields) {
-      let filterItemOptions = Filter.getFilterFieldsOptions(
-        key,
-        this.props.filter_options
-      );
+      let filterItemOptions = this.props.filter_options.find( option => option.id === key );
 
       let curentFilterValue = this.props.filter_fields[key];
 

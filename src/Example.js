@@ -14,16 +14,18 @@ export class Example extends Component {
     super(props);
     //this.state = {};
 
-    let filter_options = this.props.options;
+    let list_options = this.props.options;
     let list_data = this.props.list_data;
-    if (!filter_options) filter_options = [{}];
+
+    if (!list_options) list_options = [{}];
     if (!list_data) {
       //default
       list_data = generateFakeData(200, 30);
-      filter_options = filterOptions;
+      list_options = filterOptions;
     }
 
     const { filter_fields } = Filter.initFilterFields(list_data);
+    const { filter_options } = Filter.initFilterOptions(list_options);
 
     this.state = {
       list_data,
@@ -70,10 +72,8 @@ export class Example extends Component {
   }
 
   formatDataType(item, key) {
-    let filterItemOptions = Filter.getFilterFieldsOptions(
-      key,
-      this.state.filter_options
-    );
+    let filterItemOptions = this.state.filter_options.find( option => option.id === key );
+
     if (filterItemOptions.type === "date") {
       return moment(item[key]).format("YYYY-MM-DD hh:mm");
     } else if (filterItemOptions.type === "number") {
